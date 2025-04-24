@@ -1,0 +1,37 @@
+<span *ngIf="showLoading | async" class="loader"></span>
+
+<ng-container *ngIf="!(showLoading | async)">
+  <ng-container *ngIf="filteredCountries | async as countries">
+    <div>
+      <input
+        type="text"
+        placeholder="Filter countries"
+        [(ngModel)]="searchQuery"
+        (input)="filterCountries()"
+      />
+
+      <ng-container *ngFor="let property of sortingProperties">
+        <button 
+          (click)="sortCountries(property)" 
+          [ngClass]="{'active': sortingActive?.property === property}">
+            Sort by {{ property }}
+          <span *ngIf="sortingActive?.property === property">
+            {{ sortingActive?.order === sortOptions.ASCENDING ? '&#8599;' : '&#8600;' }}
+          </span>
+        </button>
+      </ng-container>
+
+      <ul class="countries-container" *ngIf="countries.length > 0; else noCountries">
+        <li *ngFor="let country of countries">
+          <a [routerLink]="['/country', country.name.common]" [queryParams]="{ ccn3: country.ccn3 }">
+            {{ country.name.common }} ({{ country.region }})
+          </a>
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #noCountries>
+  <p>No countries found.</p>
+</ng-template>

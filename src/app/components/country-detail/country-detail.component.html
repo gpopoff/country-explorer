@@ -1,0 +1,10 @@
+<div *ngIf="country$ | async as country; else loading">
+  <h1>{{ country.name.common }}</h1>
+  <img class="flag" [src]="country.flags.svg" alt="Flag of {{ country.name.common }}" />
+  <p><strong>Population:</strong> {{ country.population | numberFormat }}</p>
+  <p><strong>Region:</strong> {{ country.region }}</p>
+</div>
+
+<ng-template #loading>
+  <span class="loader"></span>
+</ng-template>
